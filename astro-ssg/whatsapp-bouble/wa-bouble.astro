@@ -1,0 +1,127 @@
+---
+// No props needed for now
+---
+<style>
+.whatsapp-bubble {
+  position: fixed;
+  bottom: 120px; /* Move above Cal.com button */
+  right: 32px;
+  z-index: 10010; /* Ensure it's above Cal.com button */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.whatsapp-btn-round {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #25d366;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+  padding: 0;
+}
+.whatsapp-btn-round:hover, .whatsapp-btn-round:focus {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+
+.whatsapp-chatbox {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+  margin-bottom: 12px;
+  width: 320px;
+  padding: 20px;
+  animation: fadeIn 0.2s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #888;
+  cursor: pointer;
+}
+
+.whatsapp-send-btn {
+  display: flex;
+  align-items: center;
+  background: #25d366;
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 10px 24px;
+  font-size: 1rem;
+  cursor: pointer;
+  gap: 8px;
+  margin-top: 16px;
+  transition: background 0.2s;
+}
+.whatsapp-send-btn:hover {
+  background: #1ebe5d;
+}
+
+.whatsapp-chatbox-header {
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #25d366;
+  font-size: 1.1rem;
+}
+
+.whatsapp-chatbox-message {
+  margin: 12px 0;
+  font-size: 1.05rem;
+  color: #333;
+}
+</style>
+
+<div class="whatsapp-bubble" id="wa-bubble-root">
+  <div id="wa-chatbox" class="whatsapp-chatbox" style="display:none; position:relative;">
+    <button class="close-btn" id="wa-close-btn" aria-label="Cerrar chat">×</button>
+    <div class="whatsapp-chatbox-header">Psikolog Nevin Keskin</div>
+    <div class="whatsapp-chatbox-message">¡Hola! ¿En qué podemos ayudarte?</div>
+    <button class="whatsapp-send-btn" id="wa-send-btn">Open Chat
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.031-.967-.273-.099-.472-.148-.67.15-.197.297-.768.966-.941 1.164-.173.199-.347.223-.644.075-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.298-.019-.458.13-.606.134-.133.298-.347.447-.52.149-.174.198-.298.298-.497.099-.198.05-.372-.025-.521-.075-.149-.669-1.611-.916-2.206-.242-.579-.487-.5-.669-.51-.173-.008-.372-.01-.571-.01-.198 0-.52.074-.792.372-.272.298-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.099 3.205 5.077 4.371.709.244 1.262.39 1.694.499.712.181 1.36.156 1.872.095.571-.067 1.758-.719 2.006-1.413.248-.694.248-1.288.173-1.413-.074-.124-.272-.198-.57-.347z" fill="#fff"/><circle cx="12" cy="12" r="11.5" stroke="#25D366"/></svg>
+    </button>
+  </div>
+  <button class="whatsapp-btn-round" id="wa-open-btn" aria-label="Abrir WhatsApp chat">
+  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="12" cy="12" r="12" fill="#25D366"/>
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.031-.967-.273-.099-.472-.148-.67.15-.197.297-.768.966-.941 1.164-.173.199-.347.223-.644.075-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.298-.019-.458.13-.606.134-.133.298-.347.447-.52.149-.174.198-.298.298-.497.099-.198.05-.372-.025-.521-.075-.149-.669-1.611-.916-2.206-.242-.579-.487-.5-.669-.51-.173-.008-.372-.01-.571-.01-.198 0-.52.074-.792.372-.272.298-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.099 3.205 5.077 4.371.709.244 1.262.39 1.694.499.712.181 1.36.156 1.872.095.571-.067 1.758-.719 2.006-1.413.248-.694.248-1.288.173-1.413-.074-.124-.272-.198-.57-.347z" fill="#fff"/>
+  </svg>
+</button>
+</div>
+
+<script is:inline>
+  const openBtn = document.getElementById('wa-open-btn');
+  const closeBtn = document.getElementById('wa-close-btn');
+  const chatBox = document.getElementById('wa-chatbox');
+  const sendBtn = document.getElementById('wa-send-btn');
+
+  if (openBtn && closeBtn && chatBox && sendBtn) {
+    openBtn.addEventListener('click', () => {
+      chatBox.style.display = chatBox.style.display === 'none' ? 'block' : 'none';
+    });
+    closeBtn.addEventListener('click', () => {
+      chatBox.style.display = 'none';
+    });
+    sendBtn.addEventListener('click', () => {
+      window.open('https://wa.me/905421997116?text=Hola!%20Quiero%20informaci%C3%B3n', '_blank');
+    });
+  }
+</script>

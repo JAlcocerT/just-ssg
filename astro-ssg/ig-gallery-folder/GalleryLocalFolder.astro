@@ -1,0 +1,64 @@
+---
+// InstagramGalleryLocalFolder.astro
+// Build a gallery from a folder under src/assets/** using import.meta.glob
+// Usage:
+//   <InstagramGalleryLocalFolder folder="property/images/flat_1" initialLoadCount={6} />
+// This will read from: src/assets/property/images/flat_1/**/*.{jpg,jpeg,png,webp,avif,gif}
+// https://github.com/JAlcocerT/real-estate-moi/blob/main/moirealestate-astro-theme/src/components/InstagramGalleryLocalFolder.astro
+
+import InstagramGalleryReact from './InstagramGallery.jsx';
+
+interface ImgItem {
+  url: string;
+  caption?: string;
+}
+
+interface Props {
+  // Path under src/assets. Examples:
+  //   "property/images/flat_1"
+  //   "/property/images/flat_1"
+  //   "src/assets/property/images/flat_1"
+  //   "@assets/property/images/flat_1"
+  folder: string;
+  initialLoadCount?: number;
+}
+
+const { folder, initialLoadCount = 6 }: Props = Astro.props as Props;
+
+// Normalize folder to a path relative to src/assets
+function normalizeFolder(input: string): string {
+  let f = input.trim();
+  // Remove any leading alias or absolute bits
+  f = f.replace(/^@assets\//, '')
+       .replace(/^src\/assets\//, '')
+       .replace(/^assets\//, '')
+       .replace(/^\/+/, '')
+       .replace(/\/+/g, '/');
+  return f;
+}
+
+const normalized = normalizeFolder(folder);
+
+// Eagerly import ALL supported assets, then filter by our folder prefix.
+const modules = import.meta.glob('../assets/**/*.{jpg,jpeg,png,webp,avif,gif}', {
+  eager: true,
+  import: 'default',
+}) as Record<string, string>;
+
+const prefix = `../assets/${normalized}/`;
+
+const imagesToUse: ImgItem[] = Object.entries(modules)
+  .filter(([path]) => path.startsWith(prefix))
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([path, url]) => {
+    const filename = path.split('/').pop() || '';
+    const nameNoExt = filename.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
+    return { url, caption: nameNoExt } as ImgItem;
+  });
+---
+
+<InstagramGalleryReact
+  client:load
+  images={imagesToUse}
+  initialLoadCount={initialLoadCount}
+/>

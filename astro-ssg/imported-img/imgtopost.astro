@@ -1,0 +1,59 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  src: string;
+  alt: string;
+  caption?: string;
+  width?: number;
+  height?: number;
+}
+
+const { src, alt, caption, width = 800, height = 600 } = Astro.props;
+---
+
+<div class="centered-image">
+  <Image 
+    src={src} 
+    alt={alt} 
+    width={width}
+    height={height}
+    class="centered-image__img"
+    format="webp"
+    quality={80}
+  />
+  {caption && (
+    <p class="centered-image__caption">
+      {caption}
+    </p>
+  )}
+</div>
+
+<style>
+  .centered-image {
+    text-align: center;
+    margin: 2rem 0;
+  }
+
+  .centered-image__img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: block;
+    margin: 0 auto;
+  }
+
+  .centered-image__caption {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  /* Dark mode support */
+  @media (prefers-color-scheme: dark) {
+    .centered-image__caption {
+      color: #999;
+    }
+  }
+</style>

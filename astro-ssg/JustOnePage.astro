@@ -1,0 +1,21 @@
+<!-- ---
+import { getCollection } from "astro:content";
+import Post from "./Page.astro";  // Adjust the path as necessary
+
+// Props passed to the component
+const { slug } = Astro.props;
+
+let post = null;
+try {
+    const posts = await getCollection('page');
+    post = posts.find(p => p.slug === slug);
+} catch (error) {
+    console.error("Error fetching the blog post:", error);
+}
+---
+
+<section class="container mx-auto max-w-screen-lg px-7 py-10 mb-10">
+    {
+        post ? <Post postData={post} num={0} /> : <p>Post not found.</p>
+    }
+</section> -->

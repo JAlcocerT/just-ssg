@@ -1,0 +1,1 @@
+https://github.com/JAlcocerT/web3/blob/main/src/components/Globe.tsx
